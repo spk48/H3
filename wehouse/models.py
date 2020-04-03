@@ -14,7 +14,8 @@ def custom_path(instance, filename):
 
 
 class Customers(models.Model):
-    UID = models.CharField(max_length = 45, primary_key = True, verbose_name = 'UID')
+    user=models.OneToOneField(User, on_delete=models.CASCADE, verbose_name='User')  # 和Django的用户一对一对应
+    UID = models.CharField(max_length = 45, unique = True, verbose_name = 'UID')
     Uname = models.CharField(max_length = 45, null = False, verbose_name = 'Uname')
     Unation = models.CharField(max_length = 45, null = False, verbose_name = 'Unation')  # 国籍
     Ugender = models.CharField(max_length = 45, verbose_name = 'Ugender')

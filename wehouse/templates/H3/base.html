@@ -14,7 +14,7 @@
 <body>
 
 <nav class="navbar navbar-light bg-light navbar-expand-lg">
-    <a class="navbar-brand" href="#">WehousE</a>
+    <a class="navbar-brand" href="/">WehousE</a>
     <div class="collapse navbar-collapse" id="narvbarSupportedContent">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item">
@@ -31,11 +31,12 @@
             </li>
         </ul>
 
+
         {% if user.is_authenticated %}
         <ul class=" navbar navbar-light navbar-nav">
             <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-                   aria-expanded="false">用户 {{ ' ' }} {{ user.reader.name }}<span class="caret"></span></a>
+                   aria-expanded="false">{{ user.customers.Uname }}<span class="caret"></span></a>
                 <ul class="dropdown-menu">
                     <li><a href="/profile/">个人信息</a></li>
                     <li><a href="#">我的订单</a></li>
@@ -62,8 +63,8 @@
 <header class="jumbotron myJumbotron">
 
     <div class="container">
-        <h1 class="display-4">我的房</h1>
-        <h3 class="lead">房子检索、售卖、交流</h3>
+        <h1 class="display-4">みんなのWehouse</h1>
+        <h3 class="lead">房屋检索、售卖、交流</h3>
     </div>
 
 </header>
