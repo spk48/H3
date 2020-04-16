@@ -9,5 +9,9 @@ urlpatterns = [
                   url(r'^$', views.index, name='index'),
                   url(r'^login',views.login,name='login'),
                   url(r'^logout',views.logout,name='logout'),
-                  url(r'^register',views.register,name = 'register')
-              ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+                  url(r'^register',views.register,name = 'register'),
+                  url(r'^contact',views.contact,name = 'contact'),
+                  url(r'^profile',views.profile,name = 'profile'),
+                  url(r'^change_profile',views.change_profile,name = 'change_profile'),
+                  url(r'^test',views.test,name = 'test'),
+              ]

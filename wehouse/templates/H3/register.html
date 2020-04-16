@@ -1,10 +1,37 @@
-{% extends 'H3/base.html' %}
-
+{% extends 'H3/base2.html' %}
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'H3/styles/contact.css' %}"/>
+<link rel="stylesheet" type="text/css" href="{% static 'H3/styles/contact_responsive.css' %}"/>
 
 {% block content %}
-
-    {% if state %}
-        <div class="col-md-2 col-md-offset-5">
+ <div class="home">
+		<div class="home_container">
+			<div class="home_background" style="background-image:url(images/contact.jpg)"></div>
+			<div class="home_content_container">
+				<div class="container">
+					<div class="row">
+						<div class="col">
+							<div class="home_content">
+								<div class="breadcrumbs">
+									<ul>
+										<li><a href="index.html">Home</a></li>
+										<li></li>
+									</ul>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+    <div class="container">
+        <div class="col">
+            {% if state %}
+        <div class="container">
+        <div class="col">
+            <div class="col-10 offset-lg-2">
+                <div class="col-md-10 col-md-offset-5">
             <div class="alert alert-warning">
                 <a href="#" class="close" data-dismiss="alert">&times;</a>
                 {% if state == 'success' %}
@@ -15,24 +42,30 @@
                 {% elif state == 'empty' %}
                     <h2> 密码不能为空 </h2>
                 {% elif state == 'user_exist' %}
-                    <h2> 户已经存在 </h2>
+                    <h2> 该用户名已经被使用 </h2>
                 {% endif %}
             </div>
         </div>
+            </div>
+        </div>
+        </div>
     {% endif %}
 
-    <div class="container myContainer">
+        <div class="container">
         <div class="row">
-            <div class="col-md-6 col-md-offset-3 col-sm-10 col-sm-offset-1">
+            <div class="col-10 offset-lg-2">
+                <div class="container myContainer">
+        <div class="col-12">
+            <div class="col-md-10 col-md-offset-3 col-sm-10 col-sm-offset-1">
 
-                <form method="POST" action="/register/" role="form" class="form-horizontal"
+                <form method="POST" action="/register/" role="form" class="newsletter_form"
                       enctype="multipart/form-data">
                     {% csrf_token %}
-                    <h1 class="form-signin-heading text-center">注册</h1>
+                    <h1 class="form-signin-heading ">注册</h1>
 
                     {% for field in registerForm %}
                         <div class="form-group">
-                            <label class="col-md-3 control-label">{{ field.label }}</label>
+                            <label class="col-md-10 col-md-offset-3 col-sm-10 col-sm-offset-1">{{ field.label }}</label>
                             <div class="col-md-9">
                                 {{ field }}
                             </div>
@@ -41,15 +74,20 @@
 
 
                     <div class="form-group">
-                        <div class="col-md-9 col-md-offset-3">
-                            <button class="btn btn btn-primary btn-block" type="submit">注册</button>
+                        <div class="col-md-9 col-md-offset-3 ">
+                            <button class="newsletter_button trans_200" type="submit" ><span>提交</span></button>
                         </div>
                     </div>
-
                 </form>
             </div>
         </div>
     </div>
+            </div>
+        </div>
+        </div>
+        </div>
+    </div>
+
 
 
 {% endblock %}

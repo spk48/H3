@@ -45,18 +45,19 @@ class RegisterForm(forms.Form):
             'id': 'id_username',
         }),
     )
-    name = forms.CharField(
-        label=u'昵称：',
-        widget=forms.TextInput(attrs={
+    nickname = forms.CharField(
+        label = u'昵称',
+        widget = forms.TextInput(attrs = {
             'class': 'form-control',
-            'name': 'name',
-            'id': 'id_name',
+            'name': 'nickname',
+            'id': 'id_nickname',
         }),
     )
     password = forms.CharField(
         label=u'密码：',
         widget=forms.TextInput(attrs={
             'class': 'form-control',
+            'type': 'password',
             'name': 'password',
             'id': 'id_password',
         }),
@@ -91,8 +92,68 @@ class RegisterForm(forms.Form):
         label = u'证件号码：',
         widget = forms.TextInput(attrs = {
             'class': 'form-control',
+            'name': 'Ulis_num',
+            'id': 'id_Ulis_num',
+        })
+    )
+
+
+class ProfileForm(forms.Form):
+    username = forms.CharField(
+        label = u'昵称',
+        widget = forms.TextInput(attrs = {
+            'class': 'form-control',
             'name': 'username',
             'id': 'id_username',
+        }),
+    )
+    age = forms.CharField(
+        label = u'年龄',
+        widget = forms.TextInput(attrs = {
+            'class': 'form-control',
+            'name': 'age',
+            'id': 'id_age',
+        }),
+    )
+    gender = forms.CharField(
+        label = u'性别',
+        widget = forms.TextInput(attrs = {
+            'class': 'form-control',
+            'name': 'gender',
+            'id': 'id_gender',
+        }),
+    )
+    nation = forms.CharField(
+        label = u'国籍',
+        widget = forms.TextInput(attrs = {
+            'class': 'form-control',
+            'name': 'nation',
+            'id': 'id_nation',
+        }),
+    )
+    phone_number = forms.CharField(
+        label = u'手机号码：',
+        widget = forms.TextInput(attrs = {
+            'class': 'form-control',
+            'name': 'phone_number',
+            'id': 'id_phone_number',
+        }),
+    )
+    Ulis_kind = forms.CharField(
+        label = u'证件类型：',
+        widget = forms.Select(choices = [
+            ('身份证', '身份证'),
+            ('中华人民共和国护照', '中华人民共和国护照'),
+            ('机动车驾驶证', '机动车驾驶证'),
+        ]),
+    )
+    Ulis_num = forms.CharField(
+        max_length = 20,
+        label = u'证件号码：',
+        widget = forms.TextInput(attrs = {
+            'class': 'form-control',
+            'name': 'Ulis_num',
+            'id': 'id_Ulis_num',
         })
     )
 
@@ -112,7 +173,6 @@ def login(request):
         password = request.POST.get('password')
 
         user = auth.authenticate(username=username, password=password)
-
         if user:
             if user.is_active:
                 auth.login(request, user)
@@ -181,3 +241,73 @@ def register(request):
     }
 
     return render(request, 'H3/register.html', context)
+
+
+def test(request):
+    return render(request, 'H3/test.html')
+
+
+def contact(request):
+    return render(request, 'H3/contact.html')
+
+
+def change_profile(request):
+    if not request.user.is_authenticated:
+        return HttpResponseRedirect('/login.html')
+    id=request.user.id
+    try:
+        customer=Customers.objects.get(user_id = id)
+    except Customers.DoesNotExist:
+        return HttpResponse('H3/ERROR.html')
+    #倘若是POST、则更改信息
+    if request.method=='POST':
+        customer.Uage=request.POST.get('age','')
+        customer.Uname=request.POST.get('username','')
+        customer.Ugender=request.POST.get('gender','')
+        customer.Unation=request.POST.get('nation','')
+        customer.Ulis_kind=request.POST.get('Ulis_kind','')
+        customer.Ulis_num=request.POST.get('Ulis_num','')
+        customer.Ucontent=request.POST.get('phone_number','')
+        customer.save()
+        context = {
+            'state': request.GET.get('state', None),
+            'customer': customer,
+        }
+        return render(request,'H3/profile.html',context)
+
+    profileform = ProfileForm(request.POST or None,
+                              initial = {
+                                  'username':customer.Uname,
+                                  'age':customer.Uage,
+                                  'gender':customer.Ugender,
+                                  'nation':customer.Unation,
+                                  'Ulis_kind': customer.Ulis_kind,
+                                  'Ulis_num':customer.Ulis_num,
+                                  'phone_number':customer.Ucontent,
+                              })
+    context={
+        'state':request.GET.get('state',None),
+        'customer':customer,
+        'ProfileForm':profileform,
+    }
+    return render(request,'H3/change_profile.html',context)
+
+
+def profile(request):
+    if not request.user.is_authenticated:
+        return HttpResponseRedirect('/login.html')
+
+    id = request.user.id;
+    try:
+        customer = Customers.objects.get(user_id = id)
+        user=User.objects.get(customers__UID = id)
+    except Customers.DoesNotExist:
+        return HttpResponse('/ERROR.html')
+
+    context = {
+        'state': request.GET.get('state', None),
+        'customer': customer,
+        'user':user,
+    }
+    return render(request,'H3/profile.html',context)
+
