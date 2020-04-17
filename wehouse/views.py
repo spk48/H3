@@ -311,3 +311,35 @@ def profile(request):
     }
     return render(request,'H3/profile.html',context)
 
+
+def cart(request):
+    return render(request,'H3/cart.html')
+
+
+def owned(request):
+    return render(request,'H3/owned.html')
+
+
+def owned_house(request):
+    if not request.user.is_authenticated:
+        return HttpResponseRedirect('/login.html')
+    id=request.user.id
+    try:
+        customer=Customers.objects.get(user_id = id)
+    except Customers.DoesNotExist:
+        return HttpResponse('H3/ERROR.html')
+    houses=House.objects.filter(Howner_id = customer.user_id)
+    context={
+        'state':request.GET.get('state',None),
+        'customer':customer,
+        'houses':houses,
+    }
+    return render(request,'H3/owned_house.html',context)
+
+
+def regist_house(request):
+    return render(request,'H3/regist_house.html')
+
+
+def house_details(request):
+    return render(request,'H3/house_details.html')

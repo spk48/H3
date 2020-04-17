@@ -1,83 +1,84 @@
 {% extends 'H3/base2.html' %}
 {% load static %}
-<link rel="stylesheet" type="text/css" href="{% static 'H3/styles/contact.css' %}"/>
-<link rel="stylesheet" type="text/css" href="{% static 'H3/styles/contact_responsive.css' %}"/>
+<link rel="stylesheet" type="text/css" href="{% static 'H3/styles/contact.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'H3/styles/contact_responsive.css' %}" />
 
 {% block title %} 用户登陆 {% endblock %}
 
 {% block content %}
-    <div class="home">
-		<div class="home_container">
-			<div class="home_background" style="background-image:url(images/contact.jpg)"></div>
-			<div class="home_content_container">
-				<div class="container">
-					<div class="row">
-						<div class="col">
-							<div class="home_content">
-								<div class="breadcrumbs">
-									<ul>
-										<li><a href="index.html">Home</a></li>
-										<li></li>
-									</ul>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-    <div class="container">
-        <div class="col">
-            <div class="col-10 offset-lg-2">
-{% if state == 'not_exist_or_password_error' %}
-		<div class="container col-md-10">
-			<div class="row">
-                <div >
-                    <div class="alert alert-warning ">
-                        <a href="#" class="close" data-dismiss="alert">x</a>
-                    <h2>用户不存在或密码错误</h2>
-                </div>
-                </div>
-            </div>
-        </div>
-
-    {% endif %}
-
-    <div class="container">
-        <div class="col">
-            <div class="col-md-10 col-md-offset-3 col-sm-10 col-sm-offset-1">
-
-
-                <form method="POST" role="form" class="form-horizontal" action="/login/">
+<div class="home">
+    <div class="home_container">
+        <div class="home_background" style="background-image:url(images/contact.jpg)"></div>
+        <div class="home_content_container">
+            <div class="container">
+                <div class="row">
                     <div class="col">
-                        {% csrf_token %}
-                    <h1 class="form-signin-heading ">登陆</h1>
-                    </div>
-
-                    <div class="col">
-                        {% for field in loginForm %}
-                        <div class="form-group">
-                            <label class="col-md-3 control-label">{{ field.label }}</label>
-                            <div class="col-md-9">
-                                {{ field }}
+                        <div class="home_content">
+                            <div class="breadcrumbs">
+                                <ul>
+                                    <li><a href="index.html">Home</a></li>
+                                    <li></li>
+                                </ul>
                             </div>
                         </div>
-                    {% endfor %}
-
-
-                    <div class="form-group">
-                        <div class="col-md-9 col-md-offset-3">
-                            <button class="newsletter_button trans_200" type="submit" ><span>登陆</span></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container">
+    <div class="col">
+        <div class="col-10 offset-lg-2">
+            {% if state == 'not_exist_or_password_error' %}
+            <div class="container col-md-10">
+                <div class="row">
+                    <div>
+                        <div class="alert alert-warning ">
+                            <a href="#" class="close" data-dismiss="alert">x</a>
+                            <h2>用户不存在或密码错误</h2>
                         </div>
                     </div>
+                </div>
+            </div>
+
+            {% endif %}
+
+            <div class="container">
+                <div class="col">
+                    <div class="col-md-10 col-md-offset-3 col-sm-10 col-sm-offset-1">
+
+
+                        <form method="POST" role="form" class="form-horizontal" action="/login/">
+                            <div class="col">
+                                {% csrf_token %}
+                                <h1 class="form-signin-heading ">登陆</h1>
+                            </div>
+
+                            <div class="col">
+                                {% for field in loginForm %}
+                                <div class="form-group">
+                                    <label class="col-md-3 control-label">{{ field.label }}</label>
+                                    <div class="col-md-9">
+                                        {{ field }}
+                                    </div>
+                                </div>
+                                {% endfor %}
+
+
+                                <div class="form-group">
+                                    <div class="col-md-9 col-md-offset-3">
+                                        <button class="newsletter_button trans_200"
+                                            type="submit"><span>登陆</span></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
                     </div>
-                </form>
+                </div>
             </div>
         </div>
     </div>
-            </div>
-        </div>
-    </div>
+</div>
 
 {% endblock %}
