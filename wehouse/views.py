@@ -1,3 +1,5 @@
+from typing import Dict, List, Any, Union
+
 from django.contrib.auth.models import User
 from django.core import paginator
 from django.shortcuts import render
@@ -13,6 +15,8 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 import json
 from wehouse.models import House,Business,Customers
 from django import forms
+import hashlib
+import time
 
 
 class LoginForm(forms.Form):
@@ -158,6 +162,115 @@ class ProfileForm(forms.Form):
     )
 
 
+class HouseDetail(forms.Form):
+    PID = forms.CharField(
+        label = u'省',
+        widget = forms.TextInput(attrs = {
+            'class': 'form-control',
+            'name': 'PID',
+            'id': 'id_PID',
+        }),
+    )
+    CID = forms.CharField(
+        label = u'市',
+        widget = forms.TextInput(attrs = {
+            'class': 'form-control',
+            'name': 'CID',
+            'id': 'id_CID',
+        }),
+    )
+    VID = forms.CharField(
+        label = u'区',
+        widget = forms.TextInput(attrs = {
+            'class': 'form-control',
+            'name': 'VID',
+            'id': 'id_VID',
+        }),
+    )
+
+    name = forms.CharField(
+        label = u'房屋名',
+        widget = forms.TextInput(attrs = {
+            'class': 'form-control',
+            'name': 'name',
+            'id': 'id_name',
+        }),
+    )
+    address =forms.CharField(
+        label = u'完整地址',
+        widget = forms.TextInput(attrs = {
+            'class': 'form-control',
+            'name': 'address',
+            'id': 'id_address',
+        }),
+    )
+    price = forms.CharField(
+        label = u'房屋价格',
+        widget = forms.TextInput(attrs = {
+            'class': 'form-control',
+            'name': 'price',
+            'id': 'id_price',
+        }),
+    )
+    content=forms.CharField(
+        label = u'联系地址',
+        widget = forms.TextInput(attrs = {
+            'class': 'form-control',
+            'name': 'content',
+            'id': 'id_content',
+        }),
+    )
+    decoration = forms.CharField(
+        label = u'装修',
+        widget = forms.TextInput(attrs = {
+            'class': 'form-control',
+            'name': 'decoration',
+            'id': 'id_decoration',
+        }),
+    )
+    kind = forms.CharField(
+        label = u'房屋类型',
+        widget = forms.TextInput(attrs = {
+            'class': 'form-control',
+            'name': 'kind',
+            'id': 'id_kind',
+        }),
+    )
+    nature = forms.CharField(
+        label = u'房屋性质',
+        widget = forms.TextInput(attrs = {
+            'class': 'form-control',
+            'name': 'nature',
+            'id': 'id_nature',
+        }),
+    )
+    area = forms.CharField(
+        label = u'房屋建筑面积',
+        widget = forms.TextInput(attrs = {
+            'class': 'form-control',
+            'name': 'nature',
+            'id': 'id_nature',
+        }),
+    )
+    cover_area = forms.CharField(
+        label = u'房屋占地面积',
+        widget = forms.TextInput(attrs = {
+            'class': 'form-control',
+            'name': 'cover_area',
+            'id': 'id_cover_area',
+        }),
+    )
+    gift = forms.CharField(
+        max_length = 20,
+        label = u'房屋附带服务：',
+        widget = forms.TextInput(attrs = {
+            'class': 'form-control',
+            'name': 'gift',
+            'id': 'id_gift',
+        })
+    )
+
+
 def index(request):
     return render(request, 'H3/index.html')
 
@@ -258,7 +371,7 @@ def change_profile(request):
     try:
         customer=Customers.objects.get(user_id = id)
     except Customers.DoesNotExist:
-        return HttpResponse('H3/ERROR.html')
+        return render(request,'H3/ERROR.html')
     #倘若是POST、则更改信息
     if request.method=='POST':
         customer.Uage=request.POST.get('age','')
@@ -313,7 +426,17 @@ def profile(request):
 
 
 def cart(request):
-    return render(request,'H3/cart.html')
+    if not request.user.is_authenticated:
+        return HttpResponseRedirect('/login.html')
+    id = request.user.id
+    try:
+        customer = Customers.objects.get(user_id = id)
+    except Customers.DoesNotExist:
+        return render(request,'H3/ERROR.html')
+    context={
+        "customer":customer,
+    }
+    return render(request,'H3/cart.html',context)
 
 
 def owned(request):
@@ -327,8 +450,8 @@ def owned_house(request):
     try:
         customer=Customers.objects.get(user_id = id)
     except Customers.DoesNotExist:
-        return HttpResponse('H3/ERROR.html')
-    houses=House.objects.filter(Howner_id = customer.user_id)
+        return render(request,'H3/ERROR.html')
+    houses=House.objects.filter(Howner_id = customer.id)
     context={
         'state':request.GET.get('state',None),
         'customer':customer,
@@ -338,8 +461,242 @@ def owned_house(request):
 
 
 def regist_house(request):
-    return render(request,'H3/regist_house.html')
+    if not request.user.is_authenticated:
+        return HttpResponseRedirect('/login.html')
+    id = request.user.id
+    try:
+        customer = Customers.objects.get(user_id = id)
+    except Customers.DoesNotExist:
+        return render(request,'H3/ERROR.html')
 
+    house_details = HouseDetail(request.POST or None)
 
+    state = None
+
+    if request.method == 'POST':
+
+        house_details = HouseDetail(request.POST, request.FILES)
+        gift = request.POST.get('gift','')
+        name=request.POST.get('name','')
+        price=request.POST.get('price','')
+
+        cover_area = request.POST.get('cover_area', '')
+        area = request.POST.get('area', '')
+        nature = request.POST.get('nature', '')
+        kind = request.POST.get('kind', '')
+        decoration = request.POST.get('decoration', '')
+        content = request.POST.get('content', '')
+        address = request.POST.get('address', '')
+        VID = request.POST.get('VID', '')
+        CID = request.POST.get('CID', '')
+        PID = request.POST.get('PID', '')
+        __HID=hash(house_details.__str__()+address+PID+CID+VID+content)
+        if House.objects.filter(HID=__HID):
+                state = 'exist'
+        else:
+            new_house = House.objects.create(HID=__HID,
+                                             PID=PID,
+                                             CID=CID,
+                                             VID=VID,
+                                             Howner =customer,
+                                             Hname = name,
+                                             Hpic = price,
+                                             Haddress = address,
+                                             Hcontect = content,
+                                             Hcover_area = cover_area,
+                                             Harea = area,
+                                             Hnature = nature,
+                                             Hkind = kind,
+                                             Hdecoration = decoration,
+                                             Hgift = gift)
+
+            new_house.save()
+            state = 'success'
+            context = {
+                'state': state,
+                'registerForm': house_details,
+            }
+            return render(request, 'H3/regist_house.html', context)
+
+    context = {
+        'state': state,
+        'registerForm': house_details,
+    }
+    return render(request,'H3/regist_house.html',context)
+
+# request传入HID
 def house_details(request):
-    return render(request,'H3/house_details.html')
+    #获取当前查看房子id,HID
+    house_id=request.GET.get('HID',None)
+    if not house_id:
+            return render(request,'H3/ERROR.html')
+    try:
+        house_detail=House.objects.get(HID = house_id)
+    except House.DoesNotExist:
+        return render(request,'H3/ERROR.html')
+    try:
+        owner = Customers.objects.get(id = house_detail.Howner_id)
+    except Customers.DoesNotExist:
+        return render(request,'H3/ERROR.html')
+    #获取当前用户信息
+    if not request.user.is_authenticated:
+        return HttpResponseRedirect('/login.html')
+    id=request.user.id
+    try:
+        customer=Customers.objects.get(user_id = id)
+    except Customers.DoesNotExist:
+        return render(request,'H3/ERROR.html')
+    context={
+        'state':request.GET.get('state',None),
+        'house_detail':house_detail,
+        'owner':owner,
+        'customer':customer,
+    }
+    return render(request,'H3/house_details.html',context)
+
+# request传入HID
+def get_house(request):
+    state=None
+    #me
+    if not request.user.is_authenticated:
+        return HttpResponseRedirect('/login.html')
+    id = request.user.id
+    try:
+        me = Customers.objects.get(user_id = id)
+    except Customers.DoesNotExist:
+        return render(request,'H3/ERROR.html')
+
+    #购买房子的信息
+    house_id=request.GET.get('HID',None)
+    if not house_id:
+            return render(request,'H3/ERROR.html')
+    try:
+        house_detail=House.objects.get(HID = house_id)
+    except House.DoesNotExist:
+        return render(request,'H3/ERROR.html')
+    #获取房主
+    try:
+        owner = Customers.objects.get(user_id = house_detail.Howner_id)
+    except Customers.DoesNotExist:
+        return render(request,'H3/ERROR.html')
+    #0 有效订单，1 已经成交，2 订单废弃
+    new_business=Business.objects.create(Bstatus = 0,
+                                         HID=house_detail,
+                                         UID = me,
+                                         Bprice = house_detail.Hprice,
+                                         Bcost = house_detail.Hprice,
+                                         BID=hash(time.time()))
+    new_business.save()
+    state="success"
+    context={
+        'state':state,
+    }
+    return render(request,'H3/get_house.html',context)
+
+def cart_buy(request):
+    if not request.user.is_authenticated:
+        return HttpResponseRedirect('/login.html')
+    id=request.user.id
+    try:
+        me=Customers.objects.get(user_id = id)
+    except Customers.DoesNotExist:
+        return render(request,'H3/ERROR.html')
+
+    bs=Business.objects.filter(UID_id = me.id)
+    context={
+        'state':request.GET.get('state',None),
+        'me':me,
+        'bs':bs,
+    }
+    return render(request,'H3/cart_buy.html',context)
+
+
+def cart_get(request):
+    if not request.user.is_authenticated:
+        return HttpResponseRedirect('/login.html')
+    id=request.user.id
+    try:
+        me=Customers.objects.get(user_id = id)
+    except Customers.DoesNotExist:
+        return render(request,'H3/ERROR.html')
+    bs=Business.objects.all()
+    context={
+        'state':request.GET.get('state',None),
+        'me':me,
+        'bs':bs,
+    }
+    return render(request,'H3/cart_get.html',context)
+
+
+def yes(request):
+    if not request.user.is_authenticated:
+        return HttpResponseRedirect('/login.html')
+    id=request.user.id
+    try:
+        me=Customers.objects.get(user_id = id)
+    except Customers.DoesNotExist:
+        return render(request,'H3/ERROR.html')
+    try:
+        bid=request.GET.get('BID','')
+        new_bs=Business.objects.get(BID=bid)
+    except Exception:
+        return render(request,'H3/ERROR.html')
+
+    house=new_bs.HID
+    new_owner=new_bs.UID
+    house.Howner=new_owner
+    new_bs.Bstatus=1
+    other_bs=Business.objects.filter(HID = house)
+    for i in other_bs:
+        i.Bstatus=2
+        i.save()
+    house.save()
+    new_bs.save()
+    try:
+        bs=Business.objects.all()
+    except Exception:
+        return render(request,'H3/ERROR.html')
+    context = {
+        'state': request.GET.get('state', None),
+        'me': me,
+        'bs': bs,
+    }
+    return render(request,'H3/cart_get.html',context)
+
+
+def no(request):
+    if not request.user.is_authenticated:
+        return HttpResponseRedirect('/login.html')
+    id = request.user.id
+    try:
+        me = Customers.objects.get(user_id = id)
+    except Customers.DoesNotExist:
+        return render(request, 'H3/ERROR.html')
+    try:
+        bid = request.GET.get('BID', '')
+        new_bs = Business.objects.get(BID = bid)
+    except Exception:
+        return render(request, 'H3/ERROR.html')
+
+    new_bs.Bstatus = 2
+    new_bs.save()
+    try:
+        bs = Business.objects.all()
+    except Exception:
+        return render(request, 'H3/ERROR.html')
+    context = {
+        'state': request.GET.get('state', None),
+        'me': me,
+        'bs': bs,
+    }
+    return render(request, 'H3/cart_get.html', context)
+
+
+def categories(request):
+    id=request.user.id
+    houses=House.objects.all()
+    context={
+        'state':request.GET.get('state',None),
+        'houses':houses,
+    }
+    return render(request,'H3/categories.html',context)

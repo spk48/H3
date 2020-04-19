@@ -3,34 +3,55 @@
 <link rel="stylesheet" type="text/css" href="{% static 'H3/styles/contact.css' %}" />
 <link rel="stylesheet" type="text/css" href="{% static 'H3/styles/contact_responsive.css' %}" />
 
-{% block title %} 用户登陆 {% endblock %}
 
 {% block content %}
 <div class="home">
-	<div class="home_container">
-		<div class="home_background" style="background-image:url(images/contact.jpg)"></div>
-		<div class="home_content_container">
-			<div class="container">
-				<div class="row">
-					<div class="col">
-						<div class="home_content">
-							<div class="breadcrumbs">
-								<ul>
-									<li><a href="index.html">Home</a></li>
-									<li></li>
-								</ul>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
+    <div class="home_container">
+        <div class="home_background" style="background-image:url(images/contact.jpg)"></div>
+        <div class="home_content_container">
+            <div class="container">
+                <div class="row">
+                    <div class="col">
+                        <div class="home_content">
+                            <div class="breadcrumbs">
+                                <ul>
+                                    <li><a href="index.html">Home</a></li>
+                                    <li></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+
 <div class="container">
-	<h2>
-		cart
-	</h2>
+    <div class="col">
+        <div class="col-10 offset-lg-4">
+            <div class="container">
+                <div class="col">
+                    <div class="col-md-10 col-md-offset-3 col-sm-10 col-sm-offset-1">
+                        <div class="form-group">
+                            <div class="col-md-9 col-md-offset-3">
+                                <a href="/cart_buy.html"> <button class="newsletter_button trans_200"><span>已经提交的订单</span></button></a>
+                            </div>
+                        </div>
+                    </div>
+                     {% if customer.staff == 1 %}
+                     <div class="col-md-10 col-md-offset-3 col-sm-10 col-sm-offset-1">
+                        <div class="form-group">
+                            <div class="col-md-9 col-md-offset-3">
+                                 <a href="/cart_get.html"> <button class="newsletter_button trans_200"><span>管理所有订单</span></button></a>
+                            </div>
+                        </div>
+                    </div>
+                     {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 {% endblock %}

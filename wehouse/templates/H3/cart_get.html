@@ -1,0 +1,105 @@
+{% extends 'H3/base2.html' %}
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'H3/styles/contact.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'H3/styles/contact_responsive.css' %}" />
+
+
+{% block content %}
+<div class="home">
+    <div class="home_container">
+        <div class="home_background" style="background-image:url(images/contact.jpg)"></div>
+        <div class="home_content_container">
+            <div class="container">
+                <div class="row">
+                    <div class="col">
+                        <div class="home_content">
+                            <div class="breadcrumbs">
+                                <ul>
+                                    <li><a href="index.html">Home</a></li>
+                                    <li></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+    {% if me.staff == 1 %}
+<div class="container">
+    <div class="col">
+        <div class="col-12 offset-lg-1">
+
+            <div class="container">
+                <table class="table table-hover">
+            <thead>
+            <th>序号</th>
+            <th>订单号</th>
+            <th>交易房屋编号</th>
+            <th>交易房屋名称</th>
+            <th>交易房屋地址</th>
+            <th>交易房屋面积</th>
+            <th>交易房屋价格</th>
+            <th>买房人</th>
+            <th>房主</th>
+            <th>订单时间</th>
+            <th>订单状态</th>
+            <th>确认交易</th>
+            <th>否决交易</th>
+            </thead>
+            <tbody>
+            {% for bs_iterm in bs %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>sdfs</td>
+                    <td>{{ bs_iterm.HID.HID }}
+                    <td><a href="/house/detail?HID={{ bs_iterm.HID.HID }}">{{ bs_iterm.HID.Hname }}</a></td>
+                    <td>{{ bs_iterm.HID.Haddress }}
+                    <td>{{ bs_iterm.HID.Harea}}</td>
+                    <td>{{ bs_iterm.HID.Hpic }}</td>
+                    <td>{{ bs_iterm.UID.Uname }}</td>
+                    <td>{{ bs_iterm.HID.Howner.Uname }}</td>
+                    <td>{{ bs_iterm.Btime }}</td>
+                    <td>
+                        {% if bs_iterm.Bstatus == "0" %}
+                            待确认
+                        {% elif bs_iterm.Bstatus == "2"%}
+                            已废弃
+                        {% elif bs_iterm.Bstatus == "1" %}
+                            交易成功
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if bs_iterm.Bstatus == "0" %}
+                            <a href="yes?BID={{ bs_iterm.BID }}">确认交易</a>
+                        {% elif bs_iterm.Bstatus == "2"%}
+                            交易已否决
+                        {% elif bs_iterm.Bstatus == "1" %}
+                            交易成功
+                        {% endif %}
+                    </td>
+                    <td>{% if bs_iterm.Bstatus == "0" %}
+                        <a href="no?BID={{ bs_iterm.BID }}">否决交易</a>
+                        {% elif bs_iterm.Bstatus == "2"%}
+                            交易已否决
+                        {% elif bs_iterm.Bstatus == "1" %}
+                            交易成功
+                        {% endif %}
+                    </td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td>空空如也</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+            </div>
+        </div>
+    </div>
+</div>
+    {% endif %}
+
+{% endblock %}

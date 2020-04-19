@@ -26,10 +26,45 @@
 		</div>
 	</div>
 </div>
-<div class="container">
-	<h2>
-		housr_tail
-	</h2>
+<div class="product_details">
+		<div class="container">
+			<div class="row details_row">
+
+				<!-- Product Image -->
+				<div class="col-lg-6">
+					<div class="details_image">
+						<div class="details_image_thumbnails d-flex flex-row align-items-start justify-content-between">
+							<div class="details_image_thumbnail active" data-image="images/details_1.jpg"><img src="/media/{{ house_detail.Hpic }}" alt=""></div>
+						</div>
+					</div>
+				</div>
+
+				<!-- Product Content -->
+				<div class="col-lg-6">
+					<div class="details_content">
+						<div class="details_name">房屋名：{{ house_detail.Hname }}<br></div>
+						<div class="details_name">房屋地址：{{ house_detail.Haddress }}<br></div>
+                        <div class="details_price">房屋价格：{{ house_detail.Hprice }}<br></div>
+                        <div class="details_name">房屋建筑面积：{{ house_detail.Harea }}<br></div>
+                        <div class="details_name">房屋占地面积：{{ house_detail.Hcover_area }}<br></div>
+                        <div class="details_name">房屋性质：{{ house_detail.Hnature }}<br></div>
+                        <div class="details_name">房屋类型：{{ house_detail.Hkind }}<br></div>
+                        <div class="details_name">房屋装修：{{ house_detail.Hdecoration }}<br></div>
+                        <div class="details_name">房屋持有者：{{ owner.Uname }}<br></div>
+                        <div class="details_name">房屋持有者联系方式：{{ owner.Ucontent }}<br></div>
+
+						<!-- In Stock -->
+						<div class="details_text">
+							<p>{{ house_detail.Hcontect }}</p>
+						</div>
+						{% if owner.id != customer.id %}
+                                 <a href="/get_house?HID={{ house_detail.HID }}"> <button class="newsletter_button trans_200"><span>购买此房产</span></button></a>
+{% endif %}
+					</div>
+				</div>
+			</div>
+		</div>
+
 </div>
 
 {% endblock %}

@@ -1,0 +1,35 @@
+{% extends 'H3/base2.html' %}
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'H3/styles/contact.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'H3/styles/contact_responsive.css' %}" />
+
+
+{% block content %}
+<div class="home">
+	<div class="home_container">
+		<div class="home_background" style="background-image:url(images/contact.jpg)"></div>
+		<div class="home_content_container">
+			<div class="container">
+				<div class="row">
+					<div class="col">
+						<div class="home_content">
+							<div class="breadcrumbs">
+								<ul>
+									<li><a href="index.html">Home</a></li>
+									<li></li>
+								</ul>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="container">
+	<h2>
+		非法操作
+	</h2>
+</div>
+
+{% endblock %}

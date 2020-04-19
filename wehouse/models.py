@@ -23,6 +23,7 @@ class Customers(models.Model):
     Ulis_kind = models.CharField(max_length = 45, null = False, verbose_name = 'Ulis_kind')  # 证件类型
     Ulis_num = models.CharField(max_length = 45, null = False, verbose_name = 'Ulis_num')  # 号码
     Ucontent = models.CharField(max_length = 45, null = False, verbose_name = 'Ucontent')  # 联系方式
+    staff=models.IntegerField(default = 0)
 
     def __str__(self):
         return self.Uname + '(' + self.UID + ')'
@@ -57,7 +58,7 @@ class Business(models.Model):
     BID = models.CharField(max_length = 45, primary_key = True, blank = True,verbose_name = 'BID')
     Bstatus = models.CharField(max_length = 45, verbose_name = 'Bstatus')
     Btime = models.DateTimeField(auto_now_add = True, editable = False, verbose_name = 'Btime')  # 订单创建时间
-    Btime_after = models.DateTimeField(auto_now_add = False, verbose_name = 'Btime_after')  # 交易时间
+    Btime_after = models.CharField(verbose_name = 'Btime_after',max_length=45)  # 交易时间
     Bprice = models.CharField(max_length = 45, verbose_name = 'Bprice')
     Bcost = models.CharField(max_length = 45, verbose_name = 'Bcost')
     UID = models.ForeignKey('Customers', on_delete = models.CASCADE)
