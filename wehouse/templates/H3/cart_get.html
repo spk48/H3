@@ -7,7 +7,7 @@
 {% block content %}
 <div class="home">
     <div class="home_container">
-        <div class="home_background" style="background-image:url(images/contact.jpg)"></div>
+        <div class="home_background" style="background-image:url({% static "H3/images/sdfsdfsdfsdfg.jpg"%})"></div>
         <div class="home_content_container">
             <div class="container">
                 <div class="row">
@@ -15,7 +15,7 @@
                         <div class="home_content">
                             <div class="breadcrumbs">
                                 <ul>
-                                    <li><a href="index.html">Home</a></li>
+                                    <li><a href="index.html">返回主页</a></li>
                                     <li></li>
                                 </ul>
                             </div>
@@ -27,6 +27,7 @@
     </div>
 </div>
     {% if me.staff == 1 %}
+        <br><br><br>
 <div class="container">
     <div >
         <div class="col-12 offset-lg-0">
@@ -35,17 +36,17 @@
                 <table class="table table-hover">
             <thead>
             <th><div style="width: max-content"> 序号</div></th>
-            <th><div style="width: max-content"> 序订单号</div></th>
-            <th><div style="width: max-content"> 序交易房屋编号</div></th>
-            <th><div style="width: max-content"> 序交易房屋名称</div></th>
-            <th><div style="width: max-content"> 序交易房屋地址</div></th>
-            <th><div style="width: max-content"> 序交易房屋价格</div></th>
-            <th><div style="width: max-content"> 序买房人</div></th>
-            <th><div style="width: max-content"> 序房主</div></th>
-            <th><div style="width: max-content"> 序订单时间</div></th>
-            <th><div style="width: max-content"> 序订单状态</div></th>
-            <th><div style="width: max-content"> 序确认交易</div></th>
-            <th><div style="width: max-content"> 序否决交易</div></th>
+            <th><div style="width: max-content"> 订单号</div></th>
+            <th><div style="width: max-content"> 交易房屋编号</div></th>
+            <th><div style="width: max-content"> 交易房屋名称</div></th>
+            <th><div style="width: max-content"> 交易房屋地址</div></th>
+            <th><div style="width: max-content"> 交易房屋价格</div></th>
+            <th><div style="width: max-content"> 买房人</div></th>
+            <th><div style="width: max-content"> 房主</div></th>
+            <th><div style="width: max-content"> 订单时间</div></th>
+            <th><div style="width: max-content"> 订单状态</div></th>
+            <th><div style="width: max-content"> 确认交易</div></th>
+            <th><div style="width: max-content"> 否决交易</div></th>
             </thead>
             <tbody>
             {% for bs_iterm in bs %}

@@ -501,7 +501,7 @@ def regist_house(request):
         VID = request.POST.get('VID', '')
         CID = request.POST.get('CID', '')
         PID = request.POST.get('PID', '')
-        photo=request.FILES['photo']
+        photo=request.FILES.get('photo','')
         __HID=hash(house_details.__str__()+address+PID+CID+VID+content)
         if House.objects.filter(HID=__HID):
                 state = 'exist'
@@ -522,7 +522,6 @@ def regist_house(request):
                                              Hdecoration = decoration,
                                              Hgift = gift,
                                              Hpic = photo)
-
             new_house.save()
             state = 'success'
             context = {
@@ -591,7 +590,7 @@ def get_house(request):
         return render(request,'H3/ERROR.html')
     #获取房主
     try:
-        owner = Customers.objects.get(user_id = house_detail.Howner_id)
+        owner = Customers.objects.get(id = house_detail.Howner_id)
     except Customers.DoesNotExist:
         return render(request,'H3/ERROR.html')
     #0 有效订单，1 已经成交，2 订单废弃
@@ -739,9 +738,22 @@ def hot(request):
 
 
 def today_is_a_nice_day(request):
+    if not request.user.is_authenticated:
+        return HttpResponseRedirect('/login.html')
+    id=request.user.id
+    try:
+        customer=Customers.objects.get(user_id = id)
+    except Customers.DoesNotExist:
+        return render(request,'H3/ERROR.html')
     list=House.objects.all()
     house=list[random.randint(0,list.count()-1)]
+    try:
+        owner = Customers.objects.get(id = house.Howner_id)
+    except Customers.DoesNotExist:
+        return render(request, 'H3/ERROR.html')
     context = {
-        'house_detail': house
+        'house_detail': house,
+        'owner':owner,
+        'customer':customer,
     }
     return render(request, 'H3/house_details.html', context)
