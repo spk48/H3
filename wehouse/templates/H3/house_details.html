@@ -32,11 +32,9 @@
 
 				<!-- Product Image -->
 				<div class="col-lg-6">
-					<div class="details_image">
 						<div class="details_image_thumbnails d-flex flex-row align-items-start justify-content-between">
-							<div class="details_image_thumbnail active" data-image="images/details_1.jpg"><img src="/media/{{ house_detail.Hpic }}" alt=""></div>
+							<div style="margin:0 auto" ><img src="/media/{{ house_detail.Hpic }}" data-action="zoom" width="180" height="256" alt=""></div>
 						</div>
-					</div>
 				</div>
 
 				<!-- Product Content -->
@@ -44,7 +42,7 @@
 					<div class="details_content">
 						<div class="details_name">房屋名：{{ house_detail.Hname }}<br></div>
 						<div class="details_name">房屋地址：{{ house_detail.Haddress }}<br></div>
-                        <div class="details_price">房屋价格：{{ house_detail.Hprice }}<br></div>
+                        <div class="details_name">房屋价格：{{ house_detail.Hprice }}<br></div>
                         <div class="details_name">房屋建筑面积：{{ house_detail.Harea }}<br></div>
                         <div class="details_name">房屋占地面积：{{ house_detail.Hcover_area }}<br></div>
                         <div class="details_name">房屋性质：{{ house_detail.Hnature }}<br></div>

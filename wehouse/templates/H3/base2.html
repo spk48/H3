@@ -3,10 +3,10 @@
 <html lang="en">
 
 <head>
-	<title>Sublime</title>
+	<title>WehousE</title>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="description" content="Sublime project">
+	<meta name="description" content="WehousE project">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	{% load static %}
 	<link rel="stylesheet" type="text/css" href="{% static 'H3/styles/bootstrap4/bootstrap.min.css' %}" />
@@ -22,6 +22,8 @@
 		href="{% static 'H3/plugins/font-awesome-4.7.0/css/font-awesome.min.css'%}" />
 	<link rel="stylesheet" type="text/css" href="{% static 'H3/styles/contact.css' %}" />
 	<link rel="stylesheet" type="text/css" href="{% static 'H3/styles/contact_responsive.css' %}" />
+    	<link rel="stylesheet" type="text/css" href="{% static 'H3/zoom.js-master/css/zoom.css' %}" />
+
 
 </head>
 
@@ -40,8 +42,8 @@
 								<div class="logo"><a href="/">WehousE.</a></div>
 								<nav class="main_nav">
 									<ul>
-										<li><a href="/categories.html">热门房屋</a></li>
-										<li><a href="/categories.html">随机一房</a></li>
+										<li><a href="/hot">热门房屋</a></li>
+										<li><a href="/today_is_a_nice_day">随机一房</a></li>
 										<li><a href="#">房价统计</a></li>
 										<li><a href="/contact.html">关于我们</a></li>
 									</ul>
@@ -100,8 +102,8 @@
 					<div class="row">
 						<div class="col">
 							<div class="search_panel_content d-flex flex-row align-items-center justify-content-end">
-								<form action="#">
-									<input type="text" class="search_input" placeholder="Search" required="required">
+								<form action="/search" method="GET">
+									<input type="text" class="search_input" placeholder="Search" required="required" name="keyword">
 								</form>
 							</div>
 						</div>
@@ -116,12 +118,12 @@
 					<nav class="main_nav">
 						<ul>
 							<li class="hassubs active">
-								<a href="/">ようこそ、{{ user.customers.Uname }}</a>
+								<a href="/">{{ user.customers.Uname }}</a>
 								<ul>
-									<li><a href="/profile.html">我的信息</a></li>
-									<li><a href="/cart.html">我的订单</a></li>
-									<li><a href="/owned.html">我的资产</a></li>
-									<li><a href="/logout/">退出登录</a></li>
+                                    <li><a href="/profile.html"><div style="width: max-content">我的信息</div></a></li>
+                                    <li><a href="/cart.html"><div style="width: max-content">我的订单</div></a></li>
+                                    <li><a href="/owned.html"><div style="width: max-content">我的资产</div></a></li>
+                                    <li><a href="/logout/"><div style="width: max-content">退出登录</div></a></li>
 								</ul>
 							</li>
 						</ul>
@@ -158,7 +160,7 @@
 						<li class="page_menu_item has-children menu_mm">
 							<a href="index.html">常用<i class="fa fa-angle-down"></i></a>
 							<ul class="page_menu_selection menu_mm">
-								<li class="page_menu_item menu_mm"><a href="/categories.html">热门房屋<i
+								<li class="page_menu_item menu_mm"><a href="/hot">热门房屋<i
 											class="fa fa-angle-down"></i></a></li>
 								<li class="page_menu_item menu_mm"><a href="product.html">随机一房<i
 											class="fa fa-angle-down"></i></a></li>
@@ -224,6 +226,8 @@
 	<script src="{% static 'H3/plugins/easing/easing.js' %}"></script>
 	<script src="{% static 'H3/plugins/parallax-js-master/parallax.min.js' %}"></script>
 	<script src="{% static 'H3/js/custom.js'%}"></script>
+	<script src="{% static 'H3/zoom.js-master/js/zoom.js'%}"></script>
+
 </body>
 
 </html>

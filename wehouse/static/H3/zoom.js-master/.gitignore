@@ -24,8 +24,8 @@ _site
 .settings
 .tmproj
 *.esproj
-*.sublime-project
-*.sublime-workspace
+*.WehousE-project
+*.WehousE-workspace
 nbproject
 Thumbs.db
 

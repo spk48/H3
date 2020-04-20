@@ -17,6 +17,8 @@ from wehouse.models import House,Business,Customers
 from django import forms
 import hashlib
 import time
+from django.db.models import Q
+import random
 
 
 class LoginForm(forms.Form):
@@ -213,7 +215,7 @@ class HouseDetail(forms.Form):
         }),
     )
     content=forms.CharField(
-        label = u'联系地址',
+        label = u'房屋描述',
         widget = forms.TextInput(attrs = {
             'class': 'form-control',
             'name': 'content',
@@ -268,6 +270,15 @@ class HouseDetail(forms.Form):
             'name': 'gift',
             'id': 'id_gift',
         })
+    )
+    photo = forms.FileField(
+        label = u'房屋照片：',
+        widget = forms.FileInput(attrs = {
+            'class': 'form-control',
+            'name': 'photo',
+            'id': 'id_photo',
+        }),
+        required = False,
     )
 
 
@@ -490,6 +501,7 @@ def regist_house(request):
         VID = request.POST.get('VID', '')
         CID = request.POST.get('CID', '')
         PID = request.POST.get('PID', '')
+        photo=request.FILES['photo']
         __HID=hash(house_details.__str__()+address+PID+CID+VID+content)
         if House.objects.filter(HID=__HID):
                 state = 'exist'
@@ -500,7 +512,7 @@ def regist_house(request):
                                              VID=VID,
                                              Howner =customer,
                                              Hname = name,
-                                             Hpic = price,
+                                             Hprice = price,
                                              Haddress = address,
                                              Hcontect = content,
                                              Hcover_area = cover_area,
@@ -508,7 +520,8 @@ def regist_house(request):
                                              Hnature = nature,
                                              Hkind = kind,
                                              Hdecoration = decoration,
-                                             Hgift = gift)
+                                             Hgift = gift,
+                                             Hpic = photo)
 
             new_house.save()
             state = 'success'
@@ -546,6 +559,8 @@ def house_details(request):
         customer=Customers.objects.get(user_id = id)
     except Customers.DoesNotExist:
         return render(request,'H3/ERROR.html')
+    house_detail.HOT+=1
+    house_detail.save()
     context={
         'state':request.GET.get('state',None),
         'house_detail':house_detail,
@@ -700,3 +715,33 @@ def categories(request):
         'houses':houses,
     }
     return render(request,'H3/categories.html',context)
+
+
+def search(request):
+    kw=request.GET.get('keyword','')
+    kwlist=list(map(str,kw.strip().split()))
+    filters=Q()
+    for n in kwlist:
+        filters = Q(Hname=n)|Q(PID=n)|Q(CID=n)|Q(VID=n)|filters
+    result=House.objects.filter(filters)
+    context={
+        'houses':result,
+    }
+    return render(request,'H3/search.html',context)
+
+
+def hot(request):
+    list=House.objects.all().order_by('-HOT')[:10]
+    context={
+        'houses':list
+    }
+    return render(request,'H3/categories.html',context)
+
+
+def today_is_a_nice_day(request):
+    list=House.objects.all()
+    house=list[random.randint(0,list.count()-1)]
+    context = {
+        'house_detail': house
+    }
+    return render(request, 'H3/house_details.html', context)

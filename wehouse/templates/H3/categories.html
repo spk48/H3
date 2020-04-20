@@ -28,7 +28,7 @@
 </div>
 <div class="container">
     <div class="col">
-        <div class="col-10 offset-lg-2">
+        <div class="col-10 offset-lg-1">
 
             <div class="container">
                 <table class="table table-hover">
@@ -40,6 +40,7 @@
             <th>房屋地址</th>
             <th>房屋面积</th>
             <th>房屋价格</th>
+            <th>热度</th>
             </thead>
             <tbody>
             {% for house in houses %}
@@ -58,7 +59,8 @@
                     <td><a href="/house/detail?HID={{ house.HID }}">{{ house.Hname }}</a></td>
                     <td>{{ house.Haddress }}
                     <td>{{ house.Harea}}</td>
-                    <td>{{ house.Hpic }}</td>
+                    <td>{{ house.Hprice }}</td>
+                    <td>{{ house.HOT }}</td>
                 </tr>
             {% empty %}
                 <tr>

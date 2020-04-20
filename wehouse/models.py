@@ -47,6 +47,7 @@ class House(models.Model):
     CID = models.CharField(max_length = 15, null = False, verbose_name = 'CID')
     VID = models.CharField(max_length = 15, null = False, verbose_name = 'VID')
     Hpic = models.ImageField(blank = True, upload_to = custom_path, verbose_name = 'Hpic')  # 房子图像
+    HOT = models.IntegerField(default = 0)
 
     def __str__(self):
         return self.Howner + ' ' + self.Hname + '(' + self.HID + ')' + self.PID + ' ' + self.CID + ' ' + self.VID

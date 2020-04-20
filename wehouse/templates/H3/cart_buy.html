@@ -27,8 +27,8 @@
     </div>
 </div>
 <div class="container">
-    <div class="col">
-        <div class="col-10 offset-lg-2">
+    <div >
+        <div class="col-auto offset-lg-0">
 
             <div class="container">
                 <table class="table table-hover">
@@ -49,21 +49,21 @@
             {% for bs_iterm in bs %}
                 <tr>
                     <td>{{ forloop.counter }}</td>
-                    <td>sdfs</td>
+                    <td>{{bs_iterm.BID}}</td>
                     <td>{{ bs_iterm.HID.HID }}
                     <td><a href="/house/detail?HID={{ bs_iterm.HID.HID }}">{{ bs_iterm.HID.Hname }}</a></td>
                     <td>{{ bs_iterm.HID.Haddress }}
                     <td>{{ bs_iterm.HID.Harea}}</td>
-                    <td>{{ bs_iterm.HID.Hpic }}</td>
+                    <td>{{ bs_iterm.HID.Hprice }}</td>
                     <td>{{ bs_iterm.HID.Howner.Uname }}</td>
                     <td>{{ bs_iterm.Btime }}</td>
                     <td>
                         {% if bs_iterm.Bstatus == "0" %}
-                            待确认
+                            <div style="width: max-content"> <span style="color: cornflowerblue">待确认</span></div>
                         {% elif bs_iterm.Bstatus == "2"%}
-                            已废弃
+                            <div style="width: max-content"><span style="color: red" >已废弃</span></div>
                         {% elif bs_iterm.Bstatus == "1" %}
-                            交易成功
+                            <div style="width: max-content"><span style="color: green" > 交易成功</span></div>
                         {% endif %}
                     </td>
                 </tr>
