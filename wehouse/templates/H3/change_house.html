@@ -6,10 +6,9 @@
 
 {% block content %}
 <div class="home">
-    <div class="home_container" >
+    <div class="home_container">
         <div class="home_background" style="background-image:url({% static "H3/images/sdfsdfsdfsdfg.jpg"%})"></div>
-
-<li><a href="/index.html">返回主页</a></li><div class="home_content_container">
+        <div class="home_content_container">
             <div class="container">
                 <div class="row">
                     <div class="col">
@@ -27,27 +26,26 @@
         </div>
     </div>
 </div>
-<br><br><br>
+    <br><br><br>
 <div class="container">
     <div class="col">
-        <div class="col-10 offset-lg-4">
+        <div class="col-10 offset-lg-2">
             <div class="container">
-                <div class="col">
-                    <div class="col-md-10 col-md-offset-3 col-sm-10 col-sm-offset-1">
-                        <div class="form-group">
-                            <div class="col-md-9 col-md-offset-3">
-                                <a href="owned_house.html"> <button class="newsletter_button trans_200"><span>已经持有房产</span></button></a>
-                            </div>
+                <form method="POST" action="/change_house?HID={{ house_detail.HID }}" role="form" class="newsletter_form"
+                    enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {% for profile in ProfileForm %}
+                    {{ profile.label }}:
+                    {{ profile }}
+                    <br>
+                    {% endfor %}
+                    <div class="form-group">
+                        <div class="col-md-9 col-md-offset-3 ">
+                            <button class="newsletter_button trans_200" type="submit"><span>提交更改</span></button>
                         </div>
                     </div>
-                    <div class="col-md-10 col-md-offset-3 col-sm-10 col-sm-offset-1">
-                        <div class="form-group">
-                            <div class="col-md-9 col-md-offset-3">
-                                 <a href="regist_house.html"> <button class="newsletter_button trans_200"><span>注册新房产</span></button></a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                </form>
+
             </div>
         </div>
     </div>

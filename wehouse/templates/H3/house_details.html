@@ -15,7 +15,7 @@
 						<div class="home_content">
 							<div class="breadcrumbs">
 								<ul>
-									<li><a href="index.html">返回主页</a></li>
+									<li><a href="/index.html">返回主页</a></li>
 									<li></li>
 								</ul>
 							</div>
@@ -51,7 +51,7 @@
                         <h4><div class="details_name">房屋装修：{{ house_detail.Hdecoration }}<br></div></h4>
                         <h4><div class="details_name">房屋持有者：{{ owner.Uname }}<br></div></h4>
                         <h4><div class="details_name">房屋持有者联系方式：{{ owner.Ucontent }}<br></div></h4>
-                        <h4><div class="details_name">简介：<br></div>
+                        <h4><div class="details_name">简介：<br></div></h4>
 
 						<!-- In Stock -->
 						<div class="details_text">
@@ -59,7 +59,9 @@
 						</div>
 						{% if owner.id != customer.id %}
                                  <a href="/get_house?HID={{ house_detail.HID }}"> <button class="newsletter_button trans_200"><span>购买此房产</span></button></a>
-{% endif %}
+                            {% else %}
+                            <a href="/change_house?HID={{ house_detail.HID }}"> <button class="newsletter_button trans_200"><span>修改房屋信息</span></button></a>
+                        {% endif %}
 					</div>
 				</div>
 			</div>

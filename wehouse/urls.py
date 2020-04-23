@@ -21,6 +21,7 @@ urlpatterns = [
                   url('regist_house.html', views.regist_house, name = 'regist_house'),
                   url(r'^house/detail$', views.house_details, name = 'house_details'),
                   url(r'^get_house$', views.get_house, name = 'get_house'),
+                  url(r'^change_house$', views.change_house, name = 'change_house'),
                   url(r'^cart_buy.html', views.cart_buy, name = 'cart_buy'),
                   url(r'^cart_get.html', views.cart_get, name = 'cart_get'),
                   url(r'^yes$', views.yes, name = 'yes'),

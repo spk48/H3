@@ -31,7 +31,7 @@ class Customers(models.Model):
 
 class House(models.Model):
     HID = models.CharField(max_length = 45, primary_key = True, verbose_name = 'HID')
-    Howner = models.ForeignKey('Customers', on_delete = models.CASCADE)  # 房子和用户，多对一。先用户后产生房子。
+    Howner = models.ForeignKey('Customers', on_delete = models.CASCADE)  # 房主
     # Howner = models.CharField(max_length = 45, primary_key = True, verbose_name = 'Howner')
     Hname = models.CharField(max_length = 45, null = False, verbose_name = 'Hname')
     Hprice = models.CharField(max_length = 45, null = False, verbose_name = 'Hprice')
@@ -62,8 +62,8 @@ class Business(models.Model):
     Btime_after = models.CharField(verbose_name = 'Btime_after',max_length=45)  # 交易时间
     Bprice = models.CharField(max_length = 45, verbose_name = 'Bprice')
     Bcost = models.CharField(max_length = 45, verbose_name = 'Bcost')
-    UID = models.ForeignKey('Customers', on_delete = models.CASCADE)
-    HID = models.ForeignKey('House', on_delete = models.CASCADE)
+    UID = models.ForeignKey('Customers', on_delete = models.CASCADE) #user
+    HID = models.ForeignKey('House', on_delete = models.CASCADE) #house
 
     def __str__(self):
         return self.UID + ' ' + self.HID

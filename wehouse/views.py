@@ -757,3 +757,80 @@ def today_is_a_nice_day(request):
         'customer':customer,
     }
     return render(request, 'H3/house_details.html', context)
+
+
+def change_house(request):
+    if not request.user.is_authenticated:
+        return HttpResponseRedirect('/login.html')
+    id = request.user.id
+    try:
+        customer = Customers.objects.get(user_id = id)
+    except Customers.DoesNotExist:
+        return render(request, 'H3/ERROR.html')
+
+    house_id = request.GET.get('HID', None)
+    if not house_id:
+            return render(request,'H3/ERROR.html')
+    try:
+        house_detail=House.objects.get(HID = house_id)
+    except House.DoesNotExist:
+        return render(request,'H3/ERROR.html')
+    #获取房主
+    try:
+        owner = Customers.objects.get(id = house_detail.Howner_id)
+    except Customers.DoesNotExist:
+        return render(request,'H3/ERROR.html')
+
+    if owner.id != customer.id:
+        return render(request, 'H3/ERROR.html')
+
+    # 倘若是POST、则更改信息
+    if request.method == 'POST':
+        house_detail.PID=request.POST.get('PID','')
+        house_detail.CID=request.POST.get('CID', '')
+        house_detail.VID=request.POST.get('VID', '')
+        house_detail.Hname=request.POST.get('name', '')
+        house_detail.Haddress=request.POST.get('address', '')
+        house_detail.Hprice=request.POST.get('price', '')
+        house_detail.Hcontect=request.POST.get('content', '')
+        house_detail.Hdecoration=request.POST.get('decoration', '')
+        house_detail.Hkind=request.POST.get('kind', '')
+        house_detail.Hnature=request.POST.get('nature', '')
+        house_detail.Harea=request.POST.get('area', '')
+        house_detail.Hcover_area=request.POST.get('cover_area', '')
+        house_detail.Hgift=request.POST.get('gift', '')
+        house_detail.Hpic=request.FILES.get('photo', '')
+        house_detail.save()
+        context = {
+            'state': request.GET.get('state', None),
+            'customer': customer,
+            'owner':owner,
+            'house_detail':house_detail
+        }
+        return render(request, 'H3/house_details.html', context)
+
+    house_details = HouseDetail(request.POST or None,
+                              initial = {
+                                  'PID': house_detail.PID,
+                                  'CID': house_detail.CID,
+                                  'VID': house_detail.VID,
+                                  'name':house_detail.Hname,
+                                  'address':house_detail.Haddress,
+                                  'price':house_detail.Hprice,
+                                  'content':house_detail.Hcontect,
+                                  'decoration':house_detail.Hdecoration,
+                                  'kind':house_detail.Hkind,
+                                  'nature':house_detail.Hnature,
+                                  'area':house_detail.Harea,
+                                  'cover_area':house_detail.Hcover_area,
+                                  'gift':house_detail.Hgift,
+                                  'photo':house_detail.Hpic,
+                              })
+    context = {
+        'state': request.GET.get('state', None),
+        'customer': customer,
+        'owner':owner,
+        'ProfileForm': house_details,
+        'house_detail':house_detail,
+    }
+    return render(request,'H3/change_house.html',context)
